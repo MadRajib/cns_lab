@@ -1,0 +1,23 @@
+#cipher_body {
+   text-align: left;
+   margin-top: 2rem;
+}
+
+#cipher_card {
+    padding:  1rem;
+    background-color: #E94560;
+}
+
+#result {
+    text-align: left;
+    margin-top: 2rem;
+}
+
+body{
+    background-color: #16213E;
+}
+
+.form-text{
+    color: #16213E;
+    font-size: medium;
+}

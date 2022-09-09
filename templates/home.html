@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
 </head>
 <body>
 
     <div class="container align-items-center justify-content-center">
         <div class="row justify-content-center">
             <div class="col-10 text-center" >
-                <h1 style="font-size:40pt;">CNS LAB</h1>
+                <h1 style="font-size:40pt;color:#F5EDDC;">CNS LAB</h1>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Select Cipher
@@ -23,29 +24,36 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </div>
-                <div id="cipher_body">
+                <div class="container" id="cipher_body">
+                    <div class="card" id="cipher_card">
+                    </div>
+                </div>
+                <div class="container" id="result">
+                    <div style="display: none" class="form-group">
+                        <label for="inputText" style="color:#F5EDDC">Result</label>
+                        <textarea type="text" name="text" class="form-control" id="resultText" ></textarea>
+                    </div>
                 </div>
             </div> 
         </div>
     </div> 
     <div class="cipher-forms" style="display:none"> 
         <div id="ceaser_cipher_body">
-            Hello Ceaser Cipher
             <form  action={{url_for('ceaser_cipher_page')}}>
                 <div class="form-group">
-                    <label for="inputText">Text</label>
+                    <label class="form-text" for="inputText">Text</label>
                     <textarea type="text" name="text" class="form-control" id="inputText" placeholder="Type Text"></textarea>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="inputOption">Option</label>
+                        <label class="form-text" for="inputOption">Option</label>
                         <select name="option" id="inputOption" class="form-control">
                             <option selected value="1">Encrypt</option>
                             <option value="2">Decrypt</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="inputKey">Key</label>
+                        <label class="form-text" for="inputKey">Key</label>
                         <input name="key" type="text" class="form-control" id="inputKey" placeholder="1..26">
                     </div>
                 </div>

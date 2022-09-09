@@ -8,9 +8,9 @@ $('#cipher-dropdown-menu a').click(function(event) {
 });
 
 function render_cipher_body(name) {
-    $('#cipher_body').empty();
+    $('#cipher_card').empty();
     if(name == "ceaser_cipher") {
-        $('#cipher_body').append($('#ceaser_cipher_body').clone());
+        $('#cipher_card').append($('#ceaser_cipher_body').clone());
     }
 }
 
@@ -27,5 +27,7 @@ $("#cipher_body" ).on("submit", "form",function( event ) {
     // Put the results in a div
     posting.done(function( data ) {
       console.log(data)
+      $("#result .form-group").show()
+      $("#resultText").val(data)
     });
 });
