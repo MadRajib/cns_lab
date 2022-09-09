@@ -1,5 +1,6 @@
 ## clone project
 ```bash
+$ cd python_projects
 $ git clone https://github.com/MadRajib/cns_lab.git
 $ cd cns_lab
 ```
