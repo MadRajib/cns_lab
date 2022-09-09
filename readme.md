@@ -1,5 +1,7 @@
 ## To install
 ```bash
+#Install all the dependencies
+$ pip3 install -r /path/to/requirements.txt
 # make the bash script as executable
 $ chmod +x run.sh
 ```
