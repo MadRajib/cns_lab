@@ -1,3 +1,8 @@
+## clone project
+```bash
+$ git clone https://github.com/MadRajib/cns_lab.git
+$ cd cns_lab
+```
 ## To install
 ```bash
 #Install all the dependencies
