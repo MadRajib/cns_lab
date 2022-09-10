@@ -87,3 +87,28 @@ def ceaser_cipher_page():
                         <a class="dropdown-item" href="#">New Chiper</a>
                     </div>
 ```
+6. add filters in lib.js file
+```js
+const Ciphers = {
+    ...
+    NEW_CIPHER :1
+}
+
+function parse(params) {
+    ...
+    if (params == "New Cipher")
+    return Ciphers.NEW_CIPHER  
+}
+
+$('#cipher-dropdown-menu a').click(function(event) {
+    ...
+ 
+        case Ciphers.NEW_CIPHER:
+            $cipherCard.append(
+                    $('#new_cipher_body').clone()
+            );      
+        default:
+            break;
+    ...
+});
+```

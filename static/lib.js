@@ -1,18 +1,40 @@
+const Ciphers = {
+    CEASER_CIPHER   :0,
+//  TODO: Add enums for ciphers
+//eg NEW_CIPHER :1
+}
+
+function parse(params) {
+  if (params == "Ceaser Cipher")
+    return Ciphers.CEASER_CIPHER  
+// TODO: Add parser for ciphers
+//eg 
+/* if (params == "New Cipher")
+    return Ciphers.NEW_CIPHER  
+*/
+}
+
 $('#cipher-dropdown-menu a').click(function(event) {
     var text = $(event.target).text().trim();
-    console.log(text)
 
-    if (text == "Ceaser Cipher"){
-        render_cipher_body("ceaser_cipher");
+    var $cipherCard = $('#cipher_card').empty();
+    switch (parse(text)) {
+        case Ciphers.CEASER_CIPHER:            
+            $cipherCard.append(
+                    $('#ceaser_cipher_body').clone()
+            );
+            break;
+// TODO: Add case for new chipers
+/*eg 
+        case Ciphers.NEW_CIPHER:
+            $cipherCard.append(
+                    $('#new_cipher_body').clone()
+            );
+*/        
+        default:
+            break;
     }
 });
-
-function render_cipher_body(name) {
-    $('#cipher_card').empty();
-    if(name == "ceaser_cipher") {
-        $('#cipher_card').append($('#ceaser_cipher_body').clone());
-    }
-}
 
 
 $("#cipher_body" ).on("submit", "form",function( event ) {

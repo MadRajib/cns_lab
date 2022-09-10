@@ -3,10 +3,14 @@ from types import MethodDescriptorType
 from flask import *
 
 from ciphers.CeaserCipher import CeaserCipher
+# TODO: import new cipher
+# from ciphers.NewCipher import NewCipher
 
 app = Flask(__name__)
 
 ceaserCipher = CeaserCipher()
+# TODO: init new class
+# newCipher = NewCipher()
 
 @app.route("/")
 def hello_world():
@@ -27,3 +31,11 @@ def ceaser_cipher_page():
     response = ceaserCipher.process_request(text, option, key)
     return jsonify(response)
 
+# TODO: add new end point
+# @app.route("/new_cipher", methods=['POST'])
+# def new_cipher_page():
+#     text = request.form.get("text")
+#     option = request.form.get("option")
+#     key = request.form.get("key")
+#     response = newCipher.process_request(text, option, key)
+#     return jsonify(response)
