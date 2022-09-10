@@ -15,6 +15,25 @@ $ chmod +x run.sh
 ```
 $ ./run.sh
 ```
+## Project Structure
+```bash
+cns_lab
+.
+├── ciphers
+│   ├── CeaserCipher.py
+│   └── __init__.py
+├── flask_app.py
+├── readme.md
+├── requirements.tx
+├── run.sh
+├── static
+│   ├── lib.js
+│   └── style.css
+└── templates
+    ├── ceaser_cipher.html
+    └── home.html
+```
+
 ## To add a new chiper
 1. create a cipher file insife cipher folder (take CeaserChiper.py as reference)
 2. import the cipher in flask_app.py
