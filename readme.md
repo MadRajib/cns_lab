@@ -1,3 +1,9 @@
+## List of Algorithms
+- [x] Ceaser
+- [x] PlayFair
+- [x] VignereCipher
+- [x] AffineCipher  
+
 ## clone project
 ```bash
 $ cd python_projects
