@@ -51,7 +51,7 @@ class AffineCipher:
         if (option == 1 and key != None):
             return self.encrypt(text, key)
         elif (option == 2):
-            return self.decrypt(text)
+            return self.decrypt(text, key)
 
 if (__name__ == "__main__") :
     crypto = AffineCipher()
