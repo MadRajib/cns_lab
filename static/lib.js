@@ -3,6 +3,7 @@ const Ciphers = {
     AFFINE_CIPHER   :1,
     VIGENERE_CIPHER :2,
     PLAYFAIR_CIPHER: 3,
+    CUSTOM_CIPHER: 4,
 //  TODO: Add enums for ciphers
 //eg NEW_CIPHER :1
 }
@@ -19,6 +20,9 @@ function parse(params) {
 
     if (params == "Playfair Cipher")
         return Ciphers.PLAYFAIR_CIPHER
+
+    if (params == "Custom Cipher")
+        return Ciphers.CUSTOM_CIPHER
 // TODO: Add parser for ciphers
 //eg 
 /* if (params == "New Cipher")
@@ -49,6 +53,11 @@ $('#cipher-dropdown-menu a').click(function(event) {
         case Ciphers.PLAYFAIR_CIPHER:            
             $cipherCard.append(
                     $('#playfair_cipher_body').clone()
+            );
+            break;
+        case Ciphers.CUSTOM_CIPHER:            
+            $cipherCard.append(
+                    $('#custom_cipher_body').clone()
             );
             break;
 // TODO: Add case for new chipers
