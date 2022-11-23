@@ -1,6 +1,7 @@
 const Ciphers = {
     CEASER_CIPHER   :0,
     AFFINE_CIPHER   :1,
+    VIGENERE_CIPHER :2,
 //  TODO: Add enums for ciphers
 //eg NEW_CIPHER :1
 }
@@ -11,6 +12,9 @@ function parse(params) {
 
     if (params == "Affine Cipher")
         return Ciphers.AFFINE_CIPHER 
+    
+    if (params == "Vigenere Cipher")
+        return Ciphers.VIGENERE_CIPHER
 // TODO: Add parser for ciphers
 //eg 
 /* if (params == "New Cipher")
@@ -31,6 +35,11 @@ $('#cipher-dropdown-menu a').click(function(event) {
         case Ciphers.AFFINE_CIPHER:            
             $cipherCard.append(
                     $('#affine_cipher_body').clone()
+            );
+            break;
+        case Ciphers.VIGENERE_CIPHER:            
+            $cipherCard.append(
+                    $('#vigenere_cipher_body').clone()
             );
             break;
 // TODO: Add case for new chipers
