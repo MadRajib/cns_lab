@@ -3,6 +3,7 @@
 - [x] PlayFair
 - [x] VignereCipher
 - [x] AffineCipher  
+- [x] CustomCipher 
 
 ## clone project
 ```bash
