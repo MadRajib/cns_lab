@@ -3,18 +3,21 @@ from types import MethodDescriptorType
 from flask import *
 
 from ciphers.CeaserCipher import CeaserCipher
+from ciphers.AffineCipher import AffineCipher
 # TODO: import new cipher
 # from ciphers.NewCipher import NewCipher
 
 app = Flask(__name__)
 
 ceaserCipher = CeaserCipher()
+affineCipher = AffineCipher()
+
 # TODO: init new class
 # newCipher = NewCipher()
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return render_template('home.html')
 
 # http://127.0.0.1:5000/cns_lab
 @app.route("/cns_lab")
@@ -30,6 +33,16 @@ def ceaser_cipher_page():
     key = request.form.get("key")
     response = ceaserCipher.process_request(text, option, key)
     return jsonify(response)
+
+@app.route("/affine_cipher", methods=['POST'])
+def affine_cipher_page():
+    text = request.form.get("text")
+    option = request.form.get("option")
+    key_1 = int(request.form.get("key_1"))
+    key_2 = int(request.form.get("key_2"))
+    response = affineCipher.process_request(text, option, [key_1,key_2])
+    return jsonify(response)
+
 
 # TODO: add new end point
 # @app.route("/new_cipher", methods=['POST'])
