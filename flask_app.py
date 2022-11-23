@@ -5,6 +5,7 @@ from flask import *
 from ciphers.CeaserCipher import CeaserCipher
 from ciphers.AffineCipher import AffineCipher
 from ciphers.VigenereCipher import VigenereCipher
+from ciphers.PlayfairCipher import PlayfairCipher
 
 # TODO: import new cipher
 # from ciphers.NewCipher import NewCipher
@@ -14,6 +15,7 @@ app = Flask(__name__)
 ceaserCipher = CeaserCipher()
 affineCipher = AffineCipher()
 vigenereCipher = VigenereCipher()
+playfairCipher = PlayfairCipher()
 
 # TODO: init new class
 # newCipher = NewCipher()
@@ -52,6 +54,14 @@ def vigenere_cipher_page():
     option = request.form.get("option")
     key = request.form.get("key")
     response = vigenereCipher.process_request(text, option, key)
+    return jsonify(response)
+
+@app.route("/playfair_cipher", methods=['POST'])
+def playfair_cipher_page():
+    text = request.form.get("text")
+    option = request.form.get("option")
+    key = request.form.get("key")
+    response = playfairCipher.process_request(text, option, key)
     return jsonify(response)
 
 

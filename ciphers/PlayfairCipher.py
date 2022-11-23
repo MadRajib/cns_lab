@@ -1,130 +1,250 @@
-class PlayFair:
-    table = None
-    row = 0
-    col = 0
-    def build_table(self, row=0, col=0):
-        self.row = row
-        self.col = col
-        self.table = []
-        for _ in range(row):
-            r = []
-            for _ in range(col):
-                r.append('*')
-            self.table.append(r)
+import string
+lower = string.ascii_lowercase
+
+class PlayfairCipher:
+    key_matrix = None
+    def __init__(self) -> None:
+        pass
+
+    def key_generation(self, key):
+        # initializing all and generating key_matrix
+        main=string.ascii_lowercase.replace('j','.')
+        # convert all alphabets to lower
+        key=key.lower()
         
-    def print_table(self):
-        for row in range(self.row):
-            for col in range(self.col):
-                print(self.table[row][col],end="")
-            print("")
+        key_matrix=['' for i in range(5)]
+        # if we have spaces in key, those are ignored automatically
+        i=0;j=0
+        for c in key:
+            if c in main:
+                # putting into matrix
+                key_matrix[i]+=c
 
-    # set all element as *
-    def clear_table(self):
-        for row in range(self.row):
-            for col in range(self.col):
-                self.table[row][col] = "*"
+                # to make sure repeated characters in key
+                # doesnt include in the key_matrix, we replace the
+                # alphabet into . in the main, whenever comes in iteration
+                main=main.replace(c,'.')
+                # counting column change
+                j+=1
+                # if column count exceeds 5
+                if(j>4):
+                    # row count is increased
+                    i+=1
+                    # column count is set again to zero
+                    j=0
 
-    def find_letter(self, letter):
-        for row in range(self.row):
-            for col in range(self.col):
-                if (self.table[row][col] == letter):
-                    return (row,col)
-        return None
-    
-    def encode_pair(self, a, b):
-        if a == b:
-            print("ERROR: letters to encode_pair must be distinct")
-            return
-        a_r, a_c = self.find_letter(a)
-        b_r, b_c = self.find_letter(b)
+        # to place other alphabets in the key_matrix
+        # the i and j values returned from the previous loop
+        # are again used in this loop, continuing the values in them
+        for c in main:
+            if c!='.':
+                key_matrix[i]+=c
 
-        h = abs(a_r - b_r)
-        w = abs(a_c - b_c)
+                j+=1
+                if j>4:
+                    i+=1
+                    j=0
+                
+        self.key_matrix = key_matrix
 
-        # if box is rectangle
-        if(w > 0 and h > 0):
-            return self.table[a_r][b_c] + self.table[b_r][a_c]
-        
-        # if only one column
-        if (w == 0):
-            return self.table[(a_r+1) % self.row][a_c] + self.table[(b_r+1) % self.row][b_c]
+    def encrypt(self, text, key):
 
-        if (h == 0):
-            return self.table[a_r][(a_c+1) % self.col] + self.table[b_r][(b_c+1) % self.col]
+        self.key_generation(key)
+        # seggrigating the maeesage into pairs
+        plain_text_pairs=[]
+        # replacing repeated characters in pair with other letter, x
+        cipher_text_pairs=[]
 
-    def decode_pair(self, a, b):
-        if a == b:
-            print("ERROR: letters to encode_pair must be distinct")
-            return
-        a_r, a_c = self.find_letter(a)
-        b_r, b_c = self.find_letter(b)
+        # remove spaces
+        plain_text=text.replace(" ","")
+        # convert to lower case
+        plain_text=plain_text.lower()
 
-        h = abs(a_r - b_r)
-        w = abs(a_c - b_c)
+        # RULE1: if both letters in the pair are same or one letter is left at last,
+        # replace second letter with x or add x, else continue with normal pairing
 
-        # if box is rectangle
-        if(w > 0 and h > 0):
-            return self.table[a_r][b_c] + self.table[b_r][a_c]
-        
-        # if only one column
-        if (w == 0):
-            return self.table[(a_r-1) % self.row][a_c] + self.table[(b_r-1) % self.row][b_c]
+        i=0
+        # let plain_text be abhi
+        while i<len(plain_text):
+            # i=0,1,2,3
+            a=plain_text[i]
+            b=''
 
-        if (h == 0):
-            return self.table[a_r][(a_c-1) % self.col] + self.table[b_r][(b_c-1) % self.col]
-    
-    
-    def create_table(self, secret):
-        self.clear_table()
-        row = 0
-        col = 0
-        for ch in secret:
-            self.table[row][col]  = ch.upper()
-            col +=1
-            if (col == self.col):
-                col = 0
-                row +=1 
+            if((i+1)==len(plain_text)):
+                # if the chosen letter is last and doesnt have pair
+                # then the pai will be x
+                b='x'
+            else:
+                # else the next letter will be pair with the previous letter
+                b=plain_text[i+1]
 
-    def create_pair(self, text):
-        pair_list = []
-        i = 0
-        while i < len(text):
-            a = text[i].upper()
-            i += 1
-            b = text[i].upper()
-            
-            if(a == b ):
-                pair_list.append(a+'X') # if we have same
+            if(a!=b):
+                plain_text_pairs.append(a+b)
+                # if not equal then leave the next letter,
+                # as it became pair with previous alphabet
+                i+=2
+            else:
+                plain_text_pairs.append(a+'x')
+                # else dont leave the next letter and put x
+                # in place of repeated letter and conitnue with the next letter
+                # which is repeated (according to algo)
+                i+=1
+                
+        # print("plain text pairs: ",plain_text_pairs)
+
+
+        for pair in plain_text_pairs:
+            # RULE2: if the letters are in the same row, replace them with
+            # letters to their immediate right respectively
+            flag=False
+            for row in self.key_matrix:
+                if(pair[0] in row and pair[1] in row):
+                    # find will return index of a letter in string
+                    j0=row.find(pair[0])
+                    j1=row.find(pair[1])
+                    cipher_text_pair=row[(j0+1)%5]+row[(j1+1)%5]
+                    cipher_text_pairs.append(cipher_text_pair)
+                    flag=True
+            if flag:
                 continue
-            i+=1
 
-            pair_list.append(a+b)    
+            # RULE3: if the letters are in the same column, replace them with
+            # letters to their immediate below respectively
+                    
+            for j in range(5):
+                col="".join([self.key_matrix[i][j] for i in range(5)])
+                if(pair[0] in col and pair[1] in col):
+                    # find will return index of a letter in string
+                    i0=col.find(pair[0])
+                    i1=col.find(pair[1])
+                    cipher_text_pair=col[(i0+1)%5]+col[(i1+1)%5]
+                    cipher_text_pairs.append(cipher_text_pair)
+                    flag=True
+            if flag:
+                continue
+            #RULE:4 if letters are not on the same row or column,
+            # replace with the letters on the same row respectively but
+            # at the other pair of corners of rectangle,
+            # which is defined by the original pair
 
-        return pair_list
+            i0=0
+            i1=0
+            j0=0
+            j1=0
+
+            for i in range(5):
+                row=self.key_matrix[i]
+                if(pair[0] in row):
+                    i0=i
+                    j0=row.find(pair[0])
+                if(pair[1] in row):
+                    i1=i
+                    j1=row.find(pair[1])
+            cipher_text_pair=self.key_matrix[i0][j1]+self.key_matrix[i1][j0]
+            cipher_text_pairs.append(cipher_text_pair)
+        
+        self.key_matrix = None
+        cipher_text = "".join(cipher_text_pairs)
+        return cipher_text
+
+    def decrypt(self,text, key):
+
+        self.key_generation(key)
+        # seggrigating the maeesage into pairs
+        plain_text_pairs=[]
+        # replacing repeated characters in pair with other letter, x
+        cipher_text_pairs=[]
+
+        # convert to lower case
+        cipher_text=text.lower()
+
+        # RULE1: if both letters in the pair are same or one letter is left at last,
+        # replace second letter with x or add x, else continue with normal pairing
+
+        i=0
+        while i<len(cipher_text):
+            # i=0,1,2,3
+            a=cipher_text[i]
+            b=cipher_text[i+1]
+
+            cipher_text_pairs.append(a+b)
+            # else dont leave the next letter and put x
+            # in place of repeated letter and conitnue with the next letter
+            # which is repeated (according to algo)
+            i+=2
+                
+        print("cipher text pairs: ",cipher_text_pairs)
 
 
+        for pair in cipher_text_pairs:
+            # RULE2: if the letters are in the same row, replace them with
+            # letters to their immediate right respectively
+            flag=False
+            for row in self.key_matrix:
+                if(pair[0] in row and pair[1] in row):
+                    # find will return index of a letter in string
+                    j0=row.find(pair[0])
+                    j1=row.find(pair[1])
+                    # same as reverse
+                    # instead of -1 we are doing +4 as it is modulo 5
+                    plain_text_pair=row[(j0+4)%5]+row[(j1+4)%5]
+                    plain_text_pairs.append(plain_text_pair)
+                    flag=True
+            if flag:
+                continue
 
-if __name__ == "__main__":
-    # s = input("Enter the secret key: ") 
-    s = "abcdefghijklmnopqrstuvqxy"
-    p = "Hidethegoldi"
+            # RULE3: if the letters are in the same column, replace them with
+            # letters to their immediate below respectively
+                    
+            for j in range(5):
+                col="".join([self.key_matrix[i][j] for i in range(5)])
+                if(pair[0] in col and pair[1] in col):
+                    # find will return index of a letter in string
+                    i0=col.find(pair[0])
+                    i1=col.find(pair[1])
+                    # same as reverse
+                    # instead of -1 we are doing +4 as it is modulo 5
+                    plain_text_pair=col[(i0+4)%5]+col[(i1+4)%5]
+                    plain_text_pairs.append(plain_text_pair)
+                    flag=True
+            if flag:
+                continue
+            #RULE:4 if letters are not on the same row or column,
+            # replace with the letters on the same row respectively but
+            # at the other pair of corners of rectangle,
+            # which is defined by the original pair
+
+            i0=0
+            i1=0
+            j0=0
+            j1=0
+
+            for i in range(5):
+                row=self.key_matrix[i]
+                if(pair[0] in row):
+                    i0=i
+                    j0=row.find(pair[0])
+                if(pair[1] in row):
+                    i1=i
+                    j1=row.find(pair[1])
+            plain_text_pair=self.key_matrix[i0][j1]+self.key_matrix[i1][j0]
+            plain_text_pairs.append(plain_text_pair)
+
+        self.key_matrix = None
+        decrypt_text = "".join(plain_text_pairs)
+        return decrypt_text
     
-    ply = PlayFair()
-    ply.build_table(5,5)
-    ply.print_table()
-    ply.create_table(s)
-    ply.print_table()
+    def process_request(self, text, option, key=None):
+        print(text, option,key)
+        option = int(option)
+        if (option == 1 and key != None):
+            return self.encrypt(text, key)
+        elif (option == 2):
+            return self.decrypt(text, key)
 
-    pairs = ply.create_pair(p)
-    print(pairs)
-    encode_pairs_list = []
-    for pair in pairs:
-       encode_pairs_list.append(ply.encode_pair(pair[0],pair[1]))
-    
-    print(encode_pairs_list)
-
-    pairs = []
-    for pair in encode_pairs_list:
-        pairs.append(ply.decode_pair(pair[0],pair[1]))
-
-    print(pairs)
+if (__name__ == "__main__") :
+    crypto = PlayfairCipher()
+    text = crypto.encrypt("This is the plain text", "Make my day beautiful")
+    print(text)
+    text = crypto.decrypt(text,"Make my day beautiful")
+    print(text)

@@ -22,6 +22,7 @@
                         <a class="dropdown-item" href='#'>Ceaser Cipher</a>
                         <a class="dropdown-item" href='#'>Affine Cipher</a>
                         <a class="dropdown-item" href="#">Vigenere Cipher</a>
+                        <a class="dropdown-item" href="#">Playfair Cipher</a>
                         <a class="dropdown-item" href="#">Something else here</a>
                         <!-- TODO: add dropdown for new cipher
                             <a class="dropdown-item" href="#">New Cipher</a>
@@ -96,6 +97,30 @@
         <!-- Vigenere Cipher -->
         <div id="vigenere_cipher_body">
             <form  action={{url_for('vigenere_cipher_page')}}>
+                <div class="form-group">
+                    <label class="form-text" for="inputText">Text</label>
+                    <textarea type="text" name="text" class="form-control" id="inputText" placeholder="Type Text"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="form-text" for="inputOption">Option</label>
+                        <select name="option" id="inputOption" class="form-control">
+                            <option selected value="1">Encrypt</option>
+                            <option value="2">Decrypt</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-text" for="inputKey">Key</label>
+                        <input name="key" type="text" class="form-control" id="inputKey" placeholder="">
+                    </div>
+                </div>
+                <button  type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- Playfair Cipher -->
+        <div id="playfair_cipher_body">
+            <form  action={{url_for('playfair_cipher_page')}}>
                 <div class="form-group">
                     <label class="form-text" for="inputText">Text</label>
                     <textarea type="text" name="text" class="form-control" id="inputText" placeholder="Type Text"></textarea>
